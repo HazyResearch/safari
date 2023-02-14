@@ -1,0 +1,5 @@
+_name_: lm
+tied: false
+rescale: true
+# loss: cross_entropy # Handled by task: cross entropy loss
+metrics: bpb # Bits per byte

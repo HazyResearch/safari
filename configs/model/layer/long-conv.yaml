@@ -1,0 +1,14 @@
+_name_: long-conv
+channels: 2
+causal: True
+lam: 0.003
+kernel_dropout: 0.2
+bidirectional: false
+activation: gelu
+postact: glu
+initializer: null
+weight_norm: false
+# dropout: ${model.dropout} # Same as null
+tie_dropout: ${oc.select:model.tie_dropout,null}
+l_max: ${oc.select:dataset.__l_max,null} # Grab dataset length if exists, otherwise set to 1024
+verbose: true

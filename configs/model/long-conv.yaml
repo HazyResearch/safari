@@ -1,0 +1,6 @@
+defaults:
+  - base
+  - override layer: long-conv
+
+transposed: false # Actually faster than "true"
+tie_dropout: true

@@ -1,0 +1,8 @@
+# Large Transformer model used as baseline for WikiText-103
+defaults:
+  - base
+  - override layer: transformer
+
+encoder:
+  _name_: position
+  dropout: ${..dropout}

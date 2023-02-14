@@ -1,0 +1,37 @@
+# @package _global_
+defaults:
+  - /pipeline: listops
+  - /model: long-conv
+  - override /scheduler: cosine_warmup
+
+model:
+  dropout: 0.
+  n_layers: 8
+  d_model: 128
+  prenorm: false
+  norm: batch
+  layer:
+    learning_rate: 0.0005
+    kernel_dropout: 0.2
+    lam: 0.002
+
+decoder:
+  mode: pool
+
+loader:
+  batch_size: 50
+
+optimizer:
+  lr: 0.01
+  weight_decay: 0.05
+
+scheduler:
+  num_training_steps: 80000
+  num_warmup_steps: 10000
+  # patience: 5
+
+trainer:
+  max_epochs: 40
+
+train:
+  seed: 2222

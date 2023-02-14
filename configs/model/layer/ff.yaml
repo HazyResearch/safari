@@ -1,0 +1,6 @@
+_name_: ff
+expand: 4
+dropout: null
+transposed: False
+dropout: 0.0
+tie_dropout: ${model.tie_dropout,null}

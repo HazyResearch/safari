@@ -1,0 +1,40 @@
+# @package _global_
+defaults:
+  - /pipeline: imdb
+  - /model: long-conv
+  - override /scheduler: cosine_warmup
+
+decoder:
+  mode: pool
+
+model:
+  dropout: 0.0
+  n_layers: 6
+  d_model: 256
+  prenorm: true
+  norm: batch
+  layer:
+    learning_rate: 0.001
+    kernel_dropout: 0.2
+    lam: 0.003
+
+dataset:
+  l_max: 4096
+  level: char
+
+loader:
+  batch_size: 16
+
+optimizer:
+  lr: 0.01
+  weight_decay: 0.05
+
+scheduler:
+  num_training_steps: 50000
+  num_warmup_steps: 5000
+
+trainer:
+  max_epochs: 32
+
+train:
+  seed: 2222

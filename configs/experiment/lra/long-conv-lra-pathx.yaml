@@ -1,0 +1,36 @@
+# @package _global_
+defaults:
+  - /pipeline: pathx
+  - /model: long-conv
+  - override /scheduler: cosine_warmup
+
+scheduler:
+  num_training_steps: 500000 # 50 epochs
+  num_warmup_steps: 10000 # 1 epoch
+
+model:
+  dropout: 0.
+  n_layers: 6
+  prenorm: true
+  d_model: 256
+  norm: batch
+  layer:
+    l_max: 16384
+    bidirectional: True
+    learning_rate: 0.0005
+    kernel_dropout: 0.3
+    lam: 0.001
+
+loader:
+  batch_size: ${eval:16//${trainer.devices}}
+
+optimizer:
+  lr: 0.0005
+  weight_decay: 0.05
+
+trainer:
+  max_epochs: 50
+
+train:
+  seed: 2222
+  interval: step # For cosine scheduler
