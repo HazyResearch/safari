@@ -33,17 +33,17 @@ python -m standalone_cifar
 
 To reproduce LRA and CIFAR experiments from the paper, see the [experiments](./experiments.md) page.
 
-<!-- ## Citation
+## Citation
 
 If you use this codebase, or otherwise found our work valuable, you can cite us as follows:
 ```
 @article{fu2023simple,
   title={Simple Hardware-Efficient Long Convolutions for Sequence Modeling},
   author={Fu, Daniel Y. and Epstein, Elliot L. and Nguyen, Eric and Thomas, Armin W. and Zhang, Michael and Dao, Tri and Rudra, Atri and R{\'e}, Christopher},
-  journal={arXiv preprint arXiv:},
+  journal={arXiv preprint arXiv:2302.06646},
   year={2023}
 }
-``` -->
+```
 
 ## Acknowledgements
 
