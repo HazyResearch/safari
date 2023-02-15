@@ -7,7 +7,7 @@ This repository will eventually merge in code from H3 and LLM training scripts.
 
 **Simple Hardware-Efficient Long Convolutions for Sequence Modeling**\
 Daniel Y. Fu*, Elliot L. Epstein*, Eric Nguyen, Armin W. Thomas, Michael Zhang, Tri Dao, Atri Rudra, Christopher Ré\
-[Paper Link](https://www.danfu.org/files/long_convs_paper.pdf) (arXiv coming soon!)
+[Paper](https://arxiv.org/abs/2302.06646)
 ![LongConvs](assets/long_convs.png "Long Convolutions for Sequence Modeling")
 
 ### Roadmap
