@@ -1,0 +1,20 @@
+# @package _global_
+defaults:
+  - /trainer: default
+  - /loader: default
+  - /dataset: wt103
+  - /optimizer: adamw
+  - /scheduler: cosine_warmup
+  - /callbacks: [base, checkpoint]
+
+train:
+  monitor: val/loss
+  mode: min
+
+task:
+  _name_: lm
+  loss: cross_entropy
+  torchmetrics: ['perplexity', 'num_tokens']
+
+encoder: null
+decoder: null

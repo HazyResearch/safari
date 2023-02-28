@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - /experiment/pile/h3-conv.yaml
+
+trainer:
+  max_steps: 100000
+
+scheduler:
+  t_initial: 100000

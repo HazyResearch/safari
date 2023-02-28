@@ -32,6 +32,8 @@ import torch.backends
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 
+OmegaConf.register_new_resolver('eval', eval)
+OmegaConf.register_new_resolver('div_up', lambda x, y: (x + y - 1) // y)
 
 # Lots of annoying hacks to get WandbLogger to continuously retry on failure
 class DummyExperiment:
@@ -194,6 +196,9 @@ class SequenceLightningModule(pl.LightningModule):
         if hasattr(self.task, 'loss_val'):
             self.loss_val = self.task.loss_val
         self.metrics = self.task.metrics
+        self.train_torchmetrics = self.task.train_torchmetrics
+        self.val_torchmetrics = self.task.val_torchmetrics
+        self.test_torchmetrics = self.task.test_torchmetrics
 
     def load_state_dict(self, state_dict, strict=True):
         if self.hparams.train.pretrained_model_state_hook['_name_'] is not None:
@@ -281,21 +286,24 @@ class SequenceLightningModule(pl.LightningModule):
             else:
                 self._state = self._detach_state(self._state)
 
-    def forward(self, batch):
-        """Passes a batch through the encoder, backbone, and decoder"""
-        # z holds arguments such as sequence length
-        x, y, *z = batch # z holds extra dataloader info such as resolution
-        if len(z) == 0:
-            z = {}
-        else:
-            assert len(z) == 1 and isinstance(z[0], dict), "Dataloader must return dictionary of extra arguments"
-            z = z[0]
+    # def forward(self, batch):
+    #     """Passes a batch through the encoder, backbone, and decoder"""
+    #     # z holds arguments such as sequence length
+    #     x, y, *z = batch # z holds extra dataloader info such as resolution
+    #     if len(z) == 0:
+    #         z = {}
+    #     else:
+    #         assert len(z) == 1 and isinstance(z[0], dict), "Dataloader must return dictionary of extra arguments"
+    #         z = z[0]
 
-        x, w = self.encoder(x, **z) # w can model-specific constructions such as key_padding_mask for transformers or state for RNNs
-        x, state = self.model(x, **w, state=self._state)
-        self._state = state
-        x, w = self.decoder(x, state=state, **z)
-        return x, y, w
+    #     x, w = self.encoder(x, **z) # w can model-specific constructions such as key_padding_mask for transformers or state for RNNs
+    #     x, state = self.model(x, **w, state=self._state)
+    #     self._state = state
+    #     x, w = self.decoder(x, state=state, **z)
+    #     return x, y, w
+
+    def forward(self, batch):
+        return self.task.forward(batch, self.encoder, self.model, self.decoder, self._state)
 
     def step(self, x_t):
         x_t, *_ = self.encoder(x_t) # Potential edge case for encoders that expect (B, L, H)?
@@ -310,7 +318,6 @@ class SequenceLightningModule(pl.LightningModule):
     def _shared_step(self, batch, batch_idx, prefix="train"):
 
         self._process_state(batch, batch_idx, train=(prefix == "train"))
-
         x, y, w = self.forward(batch)
 
         # Loss
@@ -324,12 +331,26 @@ class SequenceLightningModule(pl.LightningModule):
         metrics["loss"] = loss
         metrics = {f"{prefix}/{k}": v for k, v in metrics.items()}
 
-        # Calculate torchmetrics: these are accumulated and logged at the end of epochs
-        self.task.torchmetrics(x, y, prefix)
+        # Calculate torchmetrics
+        torchmetrics = getattr(self, f'{prefix}_torchmetrics')
+        torchmetrics(x, y, loss=loss)
+        
+        log_on_step = 'eval' in self.hparams and self.hparams.eval.get('log_on_step', False) and prefix == 'train'
 
         self.log_dict(
             metrics,
-            on_step=False,
+            on_step=log_on_step,
+            on_epoch=True,
+            prog_bar=True,
+            add_dataloader_idx=False,
+            sync_dist=True,
+        )
+
+        # log the whole dict, otherwise lightning takes the mean to reduce it
+        # https://pytorch-lightning.readthedocs.io/en/stable/visualize/logging_advanced.html#enable-metrics-for-distributed-training
+        self.log_dict(
+            torchmetrics,
+            on_step=log_on_step,
             on_epoch=True,
             prog_bar=True,
             add_dataloader_idx=False,
@@ -344,14 +365,14 @@ class SequenceLightningModule(pl.LightningModule):
     def training_epoch_end(self, outputs):
         # Log training torchmetrics
         super().training_epoch_end(outputs)
-        self.log_dict(
-            {f"train/{k}": v for k, v in self.task.get_torchmetrics("train").items()},
-            on_step=False,
-            on_epoch=True,
-            prog_bar=True,
-            add_dataloader_idx=False,
-            sync_dist=True,
-        )
+        # self.log_dict(
+        #     {f"train/{k}": v for k, v in self.task.get_torchmetrics("train").items()},
+        #     on_step=False,
+        #     on_epoch=True,
+        #     prog_bar=True,
+        #     add_dataloader_idx=False,
+        #     sync_dist=True,
+        # )
 
     def on_validation_epoch_start(self):
         # Reset all validation torchmetrics
@@ -361,15 +382,15 @@ class SequenceLightningModule(pl.LightningModule):
     def validation_epoch_end(self, outputs):
         # Log all validation torchmetrics
         super().validation_epoch_end(outputs)
-        for name in self.val_loader_names:
-            self.log_dict(
-                {f"{name}/{k}": v for k, v in self.task.get_torchmetrics(name).items()},
-                on_step=False,
-                on_epoch=True,
-                prog_bar=True,
-                add_dataloader_idx=False,
-                sync_dist=True,
-            )
+        # for name in self.val_loader_names:
+        #     self.log_dict(
+        #         {f"{name}/{k}": v for k, v in self.task.get_torchmetrics(name).items()},
+        #         on_step=False,
+        #         on_epoch=True,
+        #         prog_bar=True,
+        #         add_dataloader_idx=False,
+        #         sync_dist=True,
+        #     )
 
     def on_test_epoch_start(self):
         # Reset all test torchmetrics
@@ -379,15 +400,15 @@ class SequenceLightningModule(pl.LightningModule):
     def test_epoch_end(self, outputs):
         # Log all test torchmetrics
         super().test_epoch_end(outputs)
-        for name in self.test_loader_names:
-            self.log_dict(
-                {f"{name}/{k}": v for k, v in self.task.get_torchmetrics(name).items()},
-                on_step=False,
-                on_epoch=True,
-                prog_bar=True,
-                add_dataloader_idx=False,
-                sync_dist=True,
-            )
+        # for name in self.test_loader_names:
+        #     self.log_dict(
+        #         {f"{name}/{k}": v for k, v in self.task.get_torchmetrics(name).items()},
+        #         on_step=False,
+        #         on_epoch=True,
+        #         prog_bar=True,
+        #         add_dataloader_idx=False,
+        #         sync_dist=True,
+        #     )
 
     def training_step(self, batch, batch_idx, dataloader_idx=0):
         loss = self._shared_step(batch, batch_idx, prefix="train")
@@ -444,7 +465,6 @@ class SequenceLightningModule(pl.LightningModule):
         )
 
     def configure_optimizers(self):
-
         # Set zero weight decay for some params
         if 'optimizer_param_grouping' in self.hparams.train:
             add_optimizer_hooks(self.model, **self.hparams.train.optimizer_param_grouping)
@@ -510,7 +530,6 @@ class SequenceLightningModule(pl.LightningModule):
         # Print optimizer info for debugging
         keys = set([k for hp in hps for k in hp.keys()])  # Special hparams
         utils.train.log_optimizer(log, optimizer, keys)
-
         # Configure scheduler
         if "scheduler" not in self.hparams:
             return optimizer

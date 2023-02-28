@@ -1,0 +1,12 @@
+# @package _global_
+defaults:
+  - /experiment/pile/h3.yaml
+  - /experiment/pile/2.7b
+
+model:
+  attn_layer_idx: [10, 21]
+  attn_cfg:
+    num_heads: 20
+    use_flash_attn: True
+    fused_bias_fc: True
+    dropout: 0.1

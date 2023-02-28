@@ -1,0 +1,5 @@
+_name_: h3-conv
+head_dim: 1
+learning_rate: ${eval:"min(0.001, ${optimizer.lr})"}
+kernel_dropout: 0.2
+lam: 0.003

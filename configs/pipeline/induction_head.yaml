@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /trainer: default
+  - /loader: default
+  - /dataset: icl_synthetics
+  - /optimizer: adamw
+  - /scheduler: cosine_warmup
+  - /callbacks: base
+
+dataset:
+  vocab_size: 20
+  input_seq_len: 30
+  copy_method: "induction_head"
+
+train:
+  monitor: val/accuracy_ignore_index
+  mode: max
+
+task:
+  _name_: lm
+  loss: cross_entropy
+  torchmetrics: ['perplexity']
+  metrics: ['accuracy_ignore_index']
+
+encoder: null
+decoder: null

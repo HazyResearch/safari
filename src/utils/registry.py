@@ -15,11 +15,14 @@ scheduler = {
     "constant_warmup": "transformers.get_constant_schedule_with_warmup",
     "linear_warmup": "transformers.get_linear_schedule_with_warmup",
     "cosine_warmup": "transformers.get_cosine_schedule_with_warmup",
+    "cosine_warmup_timm": "src.utils.optim.schedulers.TimmCosineLRScheduler",
 }
 
 model = {
     # Backbones from this repo
     "model": "src.models.sequence.SequenceModel",
+    "lm": "src.models.sequence.long_conv_lm.ConvLMHeadModel",
+    "lm_simple": "src.models.sequence.simple_lm.SimpleLMHeadModel",
 }
 
 layer = {
@@ -29,6 +32,8 @@ layer = {
     "s4d": "src.models.sequence.ssm.s4d.S4D",
     "s4_simple": "src.models.sequence.ssm.s4_simple.SimpleS4Wrapper",
     "long-conv": "src.models.sequence.long_conv.LongConv",
+    "h3": "src.models.sequence.h3.H3",
+    "h3-conv": "src.models.sequence.h3_conv.H3Conv",
 }
 
 callbacks = {

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.0.1 (2023-02-26)
+Added H3 language model scripts and synthetics.
+
 ### 0.0.0 (2023-02-13)
 
 Initial release of the code base.

@@ -1,0 +1,6 @@
+_name_: h3
+d_state: 64
+head_dim: 1
+mode: diag
+measure: diag-lin
+lr: ${eval:"min(0.001, ${optimizer.lr})"}

@@ -1,0 +1,61 @@
+# @package _global_
+defaults:
+  - /pipeline: wt103
+  - override /scheduler: cosine_warmup_timm
+
+model:
+  _name_: lm
+  d_model: 768
+  n_layer: 12
+  d_inner: ${eval:4 * ${.d_model}}
+  vocab_size: 50257
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  ssm_cfg:
+    d_state: 64
+    head_dim: 1
+    mode: diag
+    measure: diag-lin
+    lr: ${eval:"min(0.001, ${optimizer.lr})"}
+    use_fast_fftconv: True
+  attn_layer_idx: [1, 8]
+  attn_cfg:
+    num_heads: 12
+    use_flash_attn: True
+    fused_bias_fc: True
+    dropout: 0.1
+  fused_mlp: True
+  fused_dropout_add_ln: True
+  residual_in_fp32: True
+  pad_vocab_size_multiple: 8
+
+trainer:
+  accelerator: gpu
+  devices: 8
+  num_nodes: 1
+  accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
+  max_epochs: 100
+  precision: 16
+  gradient_clip_val: 1.0
+  strategy: null
+
+dataset:
+  # batch_size: 32  # Per GPU
+  batch_size: ${eval:"8 if ${train.gpu_mem} <= 16 else (16 if ${train.gpu_mem} <= 24 else 32)"}
+  max_length: 1024
+
+scheduler:
+  t_in_epochs: False
+  t_initial: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
+  warmup_lr_init: 1e-6
+  warmup_t: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs} * 0.01}
+  lr_min: ${eval:0.1 * ${optimizer.lr}}
+
+optimizer:
+  lr: 6e-4
+  weight_decay: 0.1
+
+train:
+  gpu_mem: ${eval:"round(float(__import__('subprocess').check_output('nvidia-smi -i 0 --query-gpu=memory.total --format=csv,noheader,nounits', shell=True).strip().decode()) / 1000)"}
+  seed: 2222
+  global_batch_size: 512  

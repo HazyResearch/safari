@@ -1,0 +1,3 @@
+_name_: s4d
+d_state: 64
+lr: ${eval:"min(0.001, ${optimizer.lr})"}

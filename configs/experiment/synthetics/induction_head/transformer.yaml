@@ -1,0 +1,19 @@
+# @package _global_
+defaults:
+  - /experiment/synthetics/induction_head/base.yaml
+
+model:
+  _name_: lm_simple
+  d_model: 32
+  n_layer: 2
+  d_inner: ${eval:4 * ${.d_model}}
+  vocab_size: ${dataset.vocab_size}
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  attn_layer_idx: [0, 1]
+  attn_cfg:
+    num_heads: 1
+    dropout: 0.1
+  max_position_embeddings: ${dataset.__l_max} # positional embeddings
+
+encoder: position_id # get position ID

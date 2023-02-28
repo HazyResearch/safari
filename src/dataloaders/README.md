@@ -1,6 +1,6 @@
 # Overview
 
-Basic datasets including MNIS and CIFAR will auto-download. Source code for these datamodules are in [basic.py](basic.py).
+Basic datasets including MNIST and CIFAR will auto-download. Source code for these datamodules are in [basic.py](basic.py).
 
 By default, data is downloaded to `./data/`  by default, where `.` is the top level directory of this repository (e.g. 'safari').
 

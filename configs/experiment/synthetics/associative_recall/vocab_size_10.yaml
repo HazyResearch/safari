@@ -1,0 +1,11 @@
+# @package _global_
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 200
+
+dataset:
+  input_seq_len: 20
+  vocab_size: 10
+

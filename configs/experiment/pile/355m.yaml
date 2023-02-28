@@ -1,0 +1,11 @@
+# @package _global_
+model:
+  d_model: 1024
+  n_layer: 24
+
+dataset:
+  batch_size: ${eval:"4 if ${train.gpu_mem} < 24 else (8 if ${train.gpu_mem} < 40 else 16)"}
+
+optimizer:
+  lr: 3.0e-4
+

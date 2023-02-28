@@ -1,0 +1,39 @@
+# @package _global_
+defaults:
+  - /pipeline: thepile
+  - override /scheduler: cosine_warmup_timm
+
+trainer:
+  accelerator: gpu
+  devices: 8
+  num_nodes: 1
+  accumulate_grad_batches: ${div_up:${train.global_batch_size}, ${eval:${trainer.devices} * ${dataset.batch_size} * ${trainer.num_nodes}}}
+  max_steps: 800000
+  val_check_interval: ${eval:2000 * ${.accumulate_grad_batches}}
+  check_val_every_n_epoch: null  # We don't care about epoch boundary
+  precision: bf16
+  gradient_clip_val: 1.0
+  strategy: null
+
+dataset:
+  batch_size: 16
+  max_length: 2048
+
+scheduler:
+  t_in_epochs: False
+  t_initial: 600000
+  warmup_lr_init: 1e-6
+  warmup_t: ${eval:${trainer.max_steps} * 0.01}
+  lr_min: ${eval:0.1 * ${optimizer.lr}}
+
+optimizer:
+  lr: 6e-4
+  weight_decay: 0.1
+
+train:
+  gpu_mem: ${eval:"round(float(__import__('subprocess').check_output('nvidia-smi -i 0 --query-gpu=memory.total --format=csv,noheader,nounits', shell=True).strip().decode()) / 1000)"}
+  seed: 2222
+  global_batch_size: 256
+
+eval:
+  log_on_step: True # don't wait to the end of the epoch to log

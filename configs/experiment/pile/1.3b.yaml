@@ -1,0 +1,24 @@
+# @package _global_
+model:
+  d_model: 2048
+  n_layer: 24
+
+dataset:
+  batch_size: ${eval:"1 if ${train.gpu_mem} < 40 else 2"}
+
+optimizer:
+  lr: 2.0e-4
+
+train:
+  global_batch_size: 512
+
+scheduler:
+  t_initial: 300000
+
+trainer:
+  max_steps: 400000
+  val_check_interval: ${eval:1000 * ${.accumulate_grad_batches}}
+
+callbacks:
+  model_checkpoint:
+    every_n_train_steps: 1000

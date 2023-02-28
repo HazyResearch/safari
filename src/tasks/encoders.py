@@ -5,7 +5,7 @@ from typing import ForwardRef
 import torch
 from torch import nn
 import torch.nn.functional as F
-from einops import rearrange
+from einops import rearrange, repeat
 
 import src.models.nn.utils as U
 import src.utils as utils
@@ -32,7 +32,11 @@ class Encoder(nn.Module):
         """
         return x, {}
 
-
+class PositionalIDEncoder(Encoder):
+    def forward(self, x):
+        position_ids = torch.arange(x.shape[-1], dtype=torch.long, device=x.device)
+        position_ids = repeat(position_ids, 'l -> b l', b=x.shape[0])
+        return x, { 'position_ids': position_ids }
 
 # Adapted from https://github.com/pytorch/examples/blob/master/word_language_model/model.py
 class PositionalEncoder(Encoder):
@@ -294,6 +298,7 @@ registry = {
     "embedding": nn.Embedding,
     "linear": nn.Linear,
     "position": PositionalEncoder,
+    "position_id": PositionalIDEncoder,
     "class": ClassEmbedding,
     "pack": PackedEncoder,
     "time": TimeEncoder,

@@ -1,0 +1,4 @@
+# @package _global_
+defaults:
+  - /experiment/synthetics/associative_recall/transformer.yaml
+  - /experiment/synthetics/associative_recall/vocab_size_10.yaml

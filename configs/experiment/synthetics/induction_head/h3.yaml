@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - /experiment/synthetics/induction_head/base.yaml
+  - /model/layer: h3
+
+model:
+  _name_: lm_simple
+  d_model: 32
+  n_layer: 2
+  d_inner: ${eval:4 * ${.d_model}}
+  vocab_size: ${dataset.vocab_size}
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+

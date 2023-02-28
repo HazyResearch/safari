@@ -6,6 +6,7 @@ defaults:
   - /task: multiclass_classification
   - /optimizer: adamw
   - /scheduler: plateau
+  - /callbacks: [base, checkpoint]
 
 train:
   monitor: val/accuracy # Needed for plateau scheduler

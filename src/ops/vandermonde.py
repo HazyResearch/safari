@@ -13,6 +13,11 @@ try:
 except:
     pass
 
+try:
+    from cauchy_mult import vand_log_mult_sym_fwd, vand_log_mult_sym_bwd
+except:
+    vand_log_mult_sym_fwd, vand_log_mult_sym_bwd = None, None
+
 _conj = lambda x: torch.cat([x, x.conj()], dim=-1)
 def _broadcast_dims(*tensors):
     max_dim = max([len(tensor.shape) for tensor in tensors])
@@ -132,3 +137,31 @@ def _log_vandermonde_matmul(x, L):
 def log_vandermonde_matmul(v, K):
     prod = contract('...n, ...nl -> ...l', v, K)
     return 2*prod.real
+
+class LogVandMultiplySymmetric(torch.autograd.Function):
+
+    @staticmethod
+    def forward(ctx, v, x, L):
+        batch, N = v.shape
+        supported_N_values = [1 << log_n for log_n in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+        if not N in supported_N_values:
+            raise NotImplementedError(f'Only support N values in {supported_N_values}')
+        max_L_value = 32 * 1024 * 64 * 1024
+        if L > max_L_value:
+            raise NotImplementedError(f'Only support L values <= {max_L_value}')
+        if not v.is_cuda and x.is_cuda:
+            raise NotImplementedError(f'Only support CUDA tensors')
+        ctx.save_for_backward(v, x)
+        return vand_log_mult_sym_fwd(v, x, L)
+
+    @staticmethod
+    def backward(ctx, dout):
+        v, x = ctx.saved_tensors
+        dv, dx = vand_log_mult_sym_bwd(v, x, dout)
+        return dv, dx, None
+
+
+if vand_log_mult_sym_fwd and vand_log_mult_sym_bwd is not None:
+    log_vandermonde_fast = LogVandMultiplySymmetric.apply
+else:
+    log_vandermonde_fast = None

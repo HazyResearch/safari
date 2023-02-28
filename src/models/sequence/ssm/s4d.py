@@ -107,6 +107,7 @@ class SSKernelDiag(nn.Module):
         lr=None,
         train_w = True,
         train_dt = True,
+        **kwargs # For compatibility with other kernels
     ):
 
         super().__init__()
@@ -277,6 +278,7 @@ class S4D(nn.Module):
             postact=None, # activation after FF
             dropout=0.0,
             transposed=True, # axis ordering (B, L, D) or (B, D, L)
+            return_state=True, # return state in addition to output
             # SSM Kernel arguments
             **kernel_args,
         ):
@@ -297,6 +299,7 @@ class S4D(nn.Module):
         self.bidirectional = bidirectional
         self.channels = channels
         self.transposed = transposed
+        self.return_state = return_state
 
         self.D = nn.Parameter(torch.randn(channels, self.h))
 
@@ -358,7 +361,10 @@ class S4D(nn.Module):
 
         y = self.output_linear(y)
 
-        return y, None # Return a None to satisfy this repo's interface, but this can be modified
+        if self.return_state:
+            return y, None # Return a None to satisfy this repo's interface, but this can be modified
+        else:
+            return y
 
     def setup_step(self):
         self.kernel.setup_step()

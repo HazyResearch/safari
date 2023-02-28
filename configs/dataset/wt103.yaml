@@ -1,0 +1,14 @@
+_name_: wt103
+dataset_name: wikitext
+dataset_config_name: wikitext-103-raw-v1
+tokenizer_name: gpt2
+cache_dir: ${oc.env:DATA_PATH}/wikitext-103/cache
+max_length: 1024
+add_eos: False
+batch_size: 8  # per GPU
+batch_size_eval: ${eval:${.batch_size} * 2}
+num_workers: 4  # For preprocessing only
+shuffle: True
+pin_memory: True
+__train_len: ${div_up:117920140, ${.max_length}}
+__l_max: ${.max_length}

@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 from sklearn.metrics import f1_score, roc_auc_score
 from functools import partial
+import torchmetrics.functional as tm_f
 
 def _student_t_map(mu, sigma, nu):
     sigma = F.softplus(sigma)
@@ -66,6 +67,13 @@ def accuracy(logits, y):
         y = y.argmax(dim=-1)
     y = y.view(-1)
     return torch.eq(torch.argmax(logits, dim=-1), y).float().mean()
+
+def accuracy_ignore_index(logits, y, ignore_index=-100):
+    num_classes = logits.shape[-1]
+    preds = torch.argmax(logits, dim=-1)
+    logits = logits.view(-1, logits.shape[-1])
+    y = y.view(-1)
+    return tm_f.classification.accuracy(preds, y, 'multiclass', num_classes=num_classes, ignore_index=ignore_index, average='micro')
 
 
 def accuracy_at_k(logits, y, k=1):
@@ -177,6 +185,7 @@ output_metric_fns = {
     "cross_entropy": cross_entropy,
     "binary_accuracy": binary_accuracy,
     "accuracy": accuracy,
+    "accuracy_ignore_index": accuracy_ignore_index,
     'accuracy@3': partial(accuracy_at_k, k=3),
     'accuracy@5': partial(accuracy_at_k, k=5),
     'accuracy@10': partial(accuracy_at_k, k=10),

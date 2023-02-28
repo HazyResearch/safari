@@ -64,8 +64,6 @@ def process_config(config: DictConfig) -> DictConfig: # TODO because of filter_k
     """
     log = get_logger()
 
-    OmegaConf.register_new_resolver('eval', eval)
-
     # Filter out keys that were used just for interpolation
     # config = dictconfig_filter_keys(config, lambda k: not k.startswith('__'))
     config = omegaconf_filter_keys(config, lambda k: not k.startswith('__'))
