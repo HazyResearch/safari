@@ -1,0 +1,23 @@
+# @package _global_
+defaults:
+  - /trainer: default
+  - /loader: default
+  - /dataset: imagenet
+  - /task: multiclass_classification
+  - /optimizer: adamw
+  - /scheduler: cosine_warmup_timm
+  - /callbacks: [base, checkpoint]
+
+task:
+  loss:
+    _name_: soft_cross_entropy
+  loss_val:
+    _name_: cross_entropy
+  metrics:
+    - accuracy
+    - accuracy@5
+    - accuracy@10
+
+train:
+  monitor: val/accuracy # Needed for plateau scheduler
+  mode: max

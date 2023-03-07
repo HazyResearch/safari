@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 import hydra
-from models.sequence.base import SequenceModule, TransposedModule
+from src.models.sequence.base import SequenceModule, TransposedModule
 import src.models.nn.utils as U
 from einops import rearrange
 

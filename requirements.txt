@@ -1,7 +1,7 @@
 numpy
 scipy
 pandas
-sklearn
+scikit-learn
 matplotlib
 tqdm
 rich
@@ -14,7 +14,11 @@ opt_einsum
 cmake # For pykeops support
 pykeops # Only for S4D. If there are installation problems with pykeops==2.x, try pykeops==1.5
 transformers # For some schedulers
+torchvision
+timm
 
 # Dataset specific packages
 torchtext # LRA
 datasets # LRA
+# timm==0.5.4 # imagenet
+# lightning-bolts # imagenet

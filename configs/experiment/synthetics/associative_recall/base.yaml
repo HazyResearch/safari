@@ -1,7 +1,7 @@
 # @package _global_
 defaults:
   - /pipeline: assoc_recall
-  - override /scheduler: cosine_warmup_timm
+  - override /scheduler: linear_warmup
 
 trainer:
   accelerator: gpu
@@ -16,11 +16,13 @@ train:
   global_batch_size: 32
 
 scheduler:
-  t_in_epochs: False
-  t_initial: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
-  warmup_lr_init: 1e-6
-  warmup_t: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${div_up:${trainer.max_epochs}, 10}}
-  lr_min: ${eval:0.1 * ${optimizer.lr}}
+  num_warmup_steps: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${div_up:${trainer.max_epochs}, 10}}
+  num_training_steps: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
+  # t_in_epochs: False
+  # t_initial: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${trainer.max_epochs}}
+  # warmup_lr_init: 1e-6
+  # warmup_t: ${eval:${div_up:${dataset.__train_len}, ${train.global_batch_size}} * ${div_up:${trainer.max_epochs}, 20}}
+  # lr_min: ${eval:0.01 * ${optimizer.lr}}
 
 optimizer:
   lr: 5e-4

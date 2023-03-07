@@ -23,6 +23,7 @@ model = {
     "model": "src.models.sequence.SequenceModel",
     "lm": "src.models.sequence.long_conv_lm.ConvLMHeadModel",
     "lm_simple": "src.models.sequence.simple_lm.SimpleLMHeadModel",
+    "vit_b_16": "src.models.baselines.vit_all.vit_base_patch16_224",
 }
 
 layer = {
@@ -34,6 +35,9 @@ layer = {
     "long-conv": "src.models.sequence.long_conv.LongConv",
     "h3": "src.models.sequence.h3.H3",
     "h3-conv": "src.models.sequence.h3_conv.H3Conv",
+    "hyena": "src.models.sequence.hyena.HyenaOperator",
+    "hyena-filter": "src.models.sequence.hyena.HyenaFilter",
+    "vit": "src.models.sequence.mha.VitAttention",
 }
 
 callbacks = {

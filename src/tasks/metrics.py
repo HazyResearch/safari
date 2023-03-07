@@ -54,10 +54,10 @@ def cross_entropy(logits, y):
     return F.cross_entropy(logits, y)
 
 
-def soft_cross_entropy(logits, y, **kwargs):
+def soft_cross_entropy(logits, y, label_smoothing=0.0):
     logits = logits.view(-1, logits.shape[-1])
     # target is now 2d (no target flattening)
-    return F.cross_entropy(logits, y, **kwargs)
+    return F.cross_entropy(logits, y, label_smoothing=label_smoothing)
 
 
 def accuracy(logits, y):

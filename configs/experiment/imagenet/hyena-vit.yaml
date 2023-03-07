@@ -1,0 +1,83 @@
+# @package _global_
+defaults:
+  - /pipeline: imagenet
+  - /model: vit
+  - override /model/layer: hyena
+  - override /scheduler: cosine_warmup_timm
+
+task:
+  # 2 options for soft_cross_entropy (for mixup)
+  loss:
+    # use soft_cross_entropy for pytorch 1.10+, which takes in label_smoothing here
+    _name_: soft_cross_entropy
+    label_smoothing: 0.1
+  # or use timm_soft_cross_entropy for pytorch 1.9 and below. TIMM does not accept
+  # label_smoothing here, add that to TIMM mixup args.
+    # _name_: timm_soft_cross_entropy
+  loss_val:
+    _name_: cross_entropy
+
+loader:
+  batch_size: 128
+  batch_size_eval: 128
+  batch_size_test: 128
+  num_workers: 12
+  persistent_workers: ${eval:"${loader.num_workers} != 0"}  # set false when using num_workers = 0
+
+trainer:
+  max_epochs: 305
+  precision: 16
+  devices: 8
+  replace_sampler_ddp: ${eval:"${dataset.num_aug_repeats} == 0"}  # only true if using RepeatAug
+  accumulate_grad_batches: ${eval:${train.global_batch_size} // ${.devices} // ${loader.batch_size}}
+
+train:
+  seed: 1112
+  ema: 0.   # if using, 0.99996
+  optimizer_param_grouping:
+    bias_weight_decay: false
+    normalization_weight_decay: false
+  remove_test_loader_in_eval: true
+  global_batch_size: 1024  # effective batch size (handled with multiple gpus, and accumulate_grad_batches)
+
+optimizer:
+  lr: 2e-4
+  weight_decay: 0.01
+
+scheduler:
+  warmup_t: 10
+
+encoder: null
+decoder: null
+
+model:
+  _name_: vit_b_16
+  dropout: 0.0
+  drop_path_rate: 0.1
+  d_model: 768 # default 768
+  depth: 12 # default 12
+  expand: 4 # default 4
+  norm: layer
+  layer_reps: 1
+  img_size: 224
+  num_classes: 1000
+  patch_size: 16
+  use_pos_embed: false
+  use_cls_token: false
+  track_norms: false
+  layer:
+    num_heads: 1
+    short_filter_order: 5
+    return_state: true  # needed to hook up to other layers nicely
+    filter_args:
+      emb_dim: 33 # dim of input to MLP, augments with positional encoding
+      order: 128 # width of the implicit MLP 
+      fused_fft_conv: false
+      lr: ${optimizer.lr}
+      lr_pos_emb: 1e-5
+      dropout: 0.0 
+      w: 1 # frequency of periodic activations 
+      wd: 0 # weight decay of kernel parameters 
+      bias: true
+      normalized: False
+      num_inner_mlps: 1

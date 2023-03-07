@@ -1,0 +1,35 @@
+# @package _global_
+defaults:
+  - /experiment/synthetics/associative_recall/base.yaml
+
+dataset:
+  vocab_size: 30
+  input_seq_len: 131072
+  num_examples: 4000
+  batch_size: 16
+
+train:
+  global_batch_size: 32
+
+trainer:
+  max_epochs: 400
+
+model:
+  _name_: lm_simple
+  d_model: 64
+  n_layer: 2
+  d_inner: ${eval:4*${.d_model}}
+  vocab_size: ${dataset.vocab_size}
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  layer:
+    _name_: hyena
+    emb_dim: 5
+    filter_order: 64
+    local_order: 3
+    l_max: ${eval:${dataset.input_seq_len}+2}
+    modulate: True
+    w: 10
+    lr: ${optimizer.lr}
+    wd: 0.0
+    lr_pos_emb: 0.0

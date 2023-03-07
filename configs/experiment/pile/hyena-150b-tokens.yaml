@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - /experiment/pile/hyena.yaml
+
+trainer:
+  max_steps: 300000
+
+scheduler:
+  t_initial: 300000

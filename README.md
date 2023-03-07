@@ -1,7 +1,20 @@
 # Convolutions for Sequence Modeling
 
 This repository provides implementations and experiments for the following papers, as well as simplified presentations of earlier work such as [S4](https://github.com/HazyResearch/state-spaces).
-This repository will eventually merge in code from Hyena as well.
+
+## Hyena 
+
+**Hyena Hierarchy: Towards Larger Convolutional Language models**
+Michael Poli\*, Stefano Massaroli\*, Eric Nguyen\*, Daniel Y. Fu, Tri Dao, Stephen Baccus, Yoshua Bengio, Stefano Ermon, Christopher Ré \
+[Paper](https://arxiv.org/abs/2302.10866)
+![Hyena](assets/hyena.png "Hyena Hierarchy")
+
+## Long Convs
+
+**Simple Hardware-Efficient Long Convolutions for Sequence Modeling**\
+Daniel Y. Fu*, Elliot L. Epstein*, Eric Nguyen, Armin W. Thomas, Michael Zhang, Tri Dao, Atri Rudra, Christopher Ré\
+[Paper](https://arxiv.org/abs/2302.06646)
+![LongConvs](assets/long_convs.png "Long Convolutions for Sequence Modeling")
 
 ## Hungry Hungry Hippos (H3)
 
@@ -11,17 +24,11 @@ International Conference on Learning Representations, 2023. Notable top-25% (spo
 [Paper](https://arxiv.org/abs/2212.14052)
 ![H3](assets/h3.png "Hungry Hungry Hippos")
 
-## Long Convs
-
-**Simple Hardware-Efficient Long Convolutions for Sequence Modeling**\
-Daniel Y. Fu*, Elliot L. Epstein*, Eric Nguyen, Armin W. Thomas, Michael Zhang, Tri Dao, Atri Rudra, Christopher Ré\
-[Paper](https://arxiv.org/abs/2302.06646)
-![LongConvs](assets/long_convs.png "Long Convolutions for Sequence Modeling")
 
 ### Roadmap
 - ~~Include H3, LLM training, and synthetics in this repository~~
 - ~~Move in fast convolution code~~
-- Add in Hyena
+- ~~Add Hyena implementation and experiments~~
 - pip package
 
 ### Changelog
@@ -44,23 +51,31 @@ See the [experiments](./experiments.md) page for more:
 * LRA experiments from the Long Convs paper
 * H3 experiments (language model, synthetics)
 * H3 + Long Conv experiments
+* Hyena language and vision experiments
 
 ## Citation
 
 If you use this codebase, or otherwise found our work valuable, you can cite us as follows:
 ```
-@inproceedings{fu2023hungry,
-  title={Hungry {H}ungry {H}ippos: Towards Language Modeling with State Space Models},
-  author={Fu, Daniel Y. and Dao, Tri and Saab, Khaled K. and Thomas, Armin W.
-  and Rudra, Atri and R{\'e}, Christopher},
-  booktitle={International Conference on Learning Representations},
+@article{poli2023hyena,
+  title={Hyena Hierarchy: Towards Larger Convolutional Language Models},
+  author={Poli, Michael and Massaroli, Stefano and Nguyen, Eric and Fu, Daniel Y and Dao, Tri and Baccus, Stephen and Bengio, Yoshua and Ermon, Stefano and R{\'e}, Christopher},
+  journal={arXiv preprint arXiv:2302.10866},
   year={2023}
 }
 
 @article{fu2023simple,
   title={Simple Hardware-Efficient Long Convolutions for Sequence Modeling},
   author={Fu, Daniel Y. and Epstein, Elliot L. and Nguyen, Eric and Thomas, Armin W. and Zhang, Michael and Dao, Tri and Rudra, Atri and R{\'e}, Christopher},
-  journal={arXiv preprint arXiv:},
+  journal={arXiv preprint arXiv:2302.06646},
+  year={2023}
+}
+
+@inproceedings{fu2023hungry,
+  title={Hungry {H}ungry {H}ippos: Towards Language Modeling with State Space Models},
+  author={Fu, Daniel Y. and Dao, Tri and Saab, Khaled K. and Thomas, Armin W.
+  and Rudra, Atri and R{\'e}, Christopher},
+  booktitle={International Conference on Learning Representations},
   year={2023}
 }
 ```
