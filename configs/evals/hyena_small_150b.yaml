@@ -1,0 +1,21 @@
+model_name: hyena-small
+tokenizer_name: gpt2
+model_config:
+  _name_: lm
+  d_model: 864 
+  d_inner: 1728 
+  n_layer: 18
+  vocab_size: 50257
+  embed_dropout: 0.0
+  layer:
+    _name_: hyena
+    emb_dim: 33 
+    filter_order: 64 
+    local_order: 3
+    l_max: 2048
+    modulate: False
+    w: 14
+  fused_mlp: True
+  fused_dropout_add_ln: True
+  residual_in_fp32: True
+  pad_vocab_size_multiple: 8
