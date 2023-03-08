@@ -1,6 +1,6 @@
 """
 Simplified standalone version of Hyena: https://arxiv.org/abs/2302.10866, designed for quick experimentation.
-A complete version is available under `src.models.hyena`.
+A complete version is available under `src.models.sequence.hyena`.
 """
 
 import math
@@ -88,7 +88,7 @@ class ExponentialModulation(OptimModule):
         target=1e-2,
         modulation_lr=0.0,
         modulate: bool=True,
-        shift: float = 0.05,
+        shift: float = 0.0,
         **kwargs
     ):
         super().__init__()
@@ -132,9 +132,6 @@ class HyenaFilter(OptimModule):
             emb_dim: dimension of the positional encoding (`emb_dim` - 1) // 2 is the number of bands
             order: width of the FFN
             num_inner_mlps: number of inner linear layers inside filter MLP
-        
-        Note:
-            filter_dropout is not implemented
         """
         super().__init__()
         self.d_model = d_model
