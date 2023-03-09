@@ -55,6 +55,11 @@ def extract_attrs_from_obj(obj, *attrs):
     return [getattr(obj, attr, None) for attr in attrs]
 
 
+def auto_assign_attrs(cls, **kwargs):
+    for k, v in kwargs.items():
+        setattr(cls, k, v)
+        
+        
 def instantiate(registry, config, *args, partial=False, wrap=None, **kwargs):
     """
     registry: Dictionary mapping names to functions or target paths (e.g. {'model': 'models.SequenceModel'})
@@ -117,5 +122,3 @@ def omegaconf_filter_keys(d, fn=None):
         )
     else:
         return d
-
-
