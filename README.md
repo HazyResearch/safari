@@ -2,9 +2,9 @@
 
 This repository provides implementations and experiments for the following papers, as well as simplified presentations of earlier work such as [S4](https://github.com/HazyResearch/state-spaces).
 
-Instructions for running models:
-* [H3](https://github.com/HazyResearch/H3/tree/main/examples)
-* [Hyena](https://github.com/HazyResearch/safari/blob/main/experiments.md#downstream-evaluations)
+Please see these instructions for how to download weights and run our pretrained models:
+* [H3](https://github.com/HazyResearch/H3/tree/main/examples) (125m-2.7B)
+* [Hyena](https://github.com/HazyResearch/safari/blob/main/experiments.md#downstream-evaluations) (small, 150M)
 
 ## Hyena 
 
