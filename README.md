@@ -2,6 +2,10 @@
 
 This repository provides implementations and experiments for the following papers, as well as simplified presentations of earlier work such as [S4](https://github.com/HazyResearch/state-spaces).
 
+Instructions for running models:
+* [H3](https://github.com/HazyResearch/H3/tree/main/examples)
+* [Hyena](https://github.com/HazyResearch/safari/blob/main/experiments.md#downstream-evaluations)
+
 ## Hyena 
 
 **Hyena Hierarchy: Towards Larger Convolutional Language models**
