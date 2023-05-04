@@ -90,10 +90,10 @@ python -m train experiment/pile/h3-conv
 ```
 The H3-conv experiment will run the model in the long convolutions paper.
 
-You can also run this to train for fewer tokens:
+You can also run this to train for fewer tokens. Make sure to have the learning rate decay properly at the end of training (set `train.scheduler.t_initial` equal to `trainer.max_steps`:
 ```
-python -m train experiment/pile/h3-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000
-python -m train experiment/pile/h3-conv-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000
+python -m train experiment/pile/h3-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
+python -m train experiment/pile/h3-conv-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
 ```
 These commands train for 5B tokens.
 
@@ -102,6 +102,13 @@ To train a small Hyena model for 150 billion tokens:
 python -m train experiment/pile/hyena-150b
 ```
 We provide a [wandb log](https://api.wandb.ai/links/hazy-research/uzoya5mf) as a reference for typical training behavior.
+
+To recreate the experiments in the Hyena paper, you should adjust the max steps and scheduler to decay at 5B, 10B, or 15B tokens:
+```
+python -m train experiment/pile/hyena-150b trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
+python -m train experiment/pile/hyena-150b trainer.max_steps=20000 train.scheduler.t_initial=20000 # 10B tokens
+python -m train experiment/pile/hyena-150b trainer.max_steps=30000 train.scheduler.t_initial=30000 # 15B tokens
+```
 
 ## Downstream Evaluations
 
