@@ -77,7 +77,7 @@ cd ../layer_norm && pip install .
 You should also install the FFT convolution library:
 ```
 cd safari
-cd csrc/fft_conv && pip install .
+cd csrc/fftconv && pip install .
 ```
 
 Next, prepare the data by following the instructions in the FlashAttention training [scripts](https://github.com/HazyResearch/flash-attention/blob/main/training/README.md).
