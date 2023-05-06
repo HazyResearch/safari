@@ -70,9 +70,9 @@ cd flash-attention
 git submodule update --init
 pip install -e .
 
-cd ../csrc/fused_dense_lib && pip install .
-cd ../csrc/xentropy && pip install .
-cd ../csrc/layer_norm && pip install .
+cd ./csrc/fused_dense_lib && pip install .
+cd ../xentropy && pip install .
+cd ../layer_norm && pip install .
 ```
 You should also install the FFT convolution library:
 ```
