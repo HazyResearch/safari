@@ -70,14 +70,14 @@ cd flash-attention
 git submodule update --init
 pip install -e .
 
-cd ../csrc/fused_dense_lib && pip install .
-cd ../csrc/xentropy && pip install .
-cd ../csrc/layer_norm && pip install .
+cd ./csrc/fused_dense_lib && pip install .
+cd ../xentropy && pip install .
+cd ../layer_norm && pip install .
 ```
 You should also install the FFT convolution library:
 ```
 cd safari
-cd csrc/fft_conv && pip install .
+cd csrc/fftconv && pip install .
 ```
 
 Next, prepare the data by following the instructions in the FlashAttention training [scripts](https://github.com/HazyResearch/flash-attention/blob/main/training/README.md).
@@ -85,15 +85,15 @@ Next, prepare the data by following the instructions in the FlashAttention train
 Then you can run these commands to train on PILE.
 If you downloaded data to `DATA_DIR` in the previous step, you will need to set `DATA_PATH=$DATA_DIR` to get the data in this repo.
 ```
-python -m train experiment/pile/h3
-python -m train experiment/pile/h3-conv
+python -m train experiment=pile/h3
+python -m train experiment=pile/h3-conv
 ```
 The H3-conv experiment will run the model in the long convolutions paper.
 
 You can also run this to train for fewer tokens. Make sure to have the learning rate decay properly at the end of training (set `train.scheduler.t_initial` equal to `trainer.max_steps`:
 ```
-python -m train experiment/pile/h3-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
-python -m train experiment/pile/h3-conv-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
+python -m train experiment=pile/h3-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
+python -m train experiment=pile/h3-conv-50b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
 ```
 These commands train for 5B tokens.
 
