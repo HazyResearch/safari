@@ -302,13 +302,14 @@ class ICLDataModule(SequenceDataset):
                 test_tensor[:, 1, :-1] = -100
             if self.copy_method in ["majority", "fom1"]:
                 train_tensor[:, 1, :-1 * (self.num_extra_seq_len - 1)] = -100
-            
-            torch.save(train_tensor, os.path.join(self.data_dir, 
-                f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
-            )
-            torch.save(test_tensor, os.path.join(self.data_dir, 
-                f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
-            )  
+
+            if self.data_dir is not None:
+                torch.save(train_tensor, os.path.join(self.data_dir,
+                    f"train_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
+                )
+                torch.save(test_tensor, os.path.join(self.data_dir,
+                    f"test_{self.copy_method}_{self.num_examples}_{self.vocab_size}_{self.input_seq_len}.pt")
+                )
              
         self.dataset = {
             'train': TensorDataset(train_tensor[:, 0, :], train_tensor[:, 1, :]),
