@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import repeat
 
-from src.utils.train import OptimModule
+from safari.utils.train import OptimModule
 
 class LongConvKernel(OptimModule):
     def __init__(

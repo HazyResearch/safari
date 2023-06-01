@@ -33,8 +33,8 @@ try:
 except ImportError:
     dropout_add_layer_norm = None
 
-from src.utils import instantiate
-import src.utils.registry as registry
+from safari.utils import instantiate
+import safari.utils.registry as registry
 
 def create_mixer_cls(layer=None, process_group=None,
                      attn_layer_idx=None, attn_cfg=None, layer_idx=None,

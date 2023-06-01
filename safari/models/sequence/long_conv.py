@@ -11,9 +11,9 @@ if optimized:
 else:
     contract = torch.einsum
 
-from src.models.nn import LinearActivation, Activation, DropoutNd
-from src.models.sequence.block_fft import BlockFFT
-from src.models.sequence.long_conv_kernel import LongConvKernel
+from safari.models.nn import LinearActivation, Activation, DropoutNd
+from safari.models.sequence.block_fft import BlockFFT
+from safari.models.sequence.long_conv_kernel import LongConvKernel
 
 class LongConv(nn.Module):
     def __init__(
@@ -57,7 +57,7 @@ class LongConv(nn.Module):
 
         super().__init__()
         if verbose:
-            import src.utils.train
+            import safari.utils.train
             log = src.utils.train.get_logger(__name__)
             log.info(f"Constructing Long Conv (H, L) = ({d_model}, {l_max})")
 

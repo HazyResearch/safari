@@ -12,7 +12,7 @@ import torch.nn.functional as F
 from einops import rearrange, repeat
 from opt_einsum import contract
 
-from src.utils.train import OptimModule
+from safari.utils.train import OptimModule
 
 
 class SSKernelShift(OptimModule):

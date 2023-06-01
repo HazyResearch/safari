@@ -3,10 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange, reduce
 
-import src.models.nn.utils as U
-import src.utils as utils
-import src.utils.config
-import src.utils.train
+import safari.models.nn.utils as U
+import safari.utils as utils
+import safari.utils.config
+import safari.utils.train
 
 log = src.utils.train.get_logger(__name__)
 

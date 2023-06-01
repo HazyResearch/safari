@@ -12,23 +12,23 @@ import torch.nn.functional as F
 from einops import rearrange, repeat
 from opt_einsum import contract
 
-from src.utils.train import OptimModule
+from safari.utils.train import OptimModule
 
-from src.utils.train import get_logger
+from safari.utils.train import get_logger
 
 log = get_logger(__name__)
 
 # This could be None if the CUDA import fails
-from src.ops.vandermonde import log_vandermonde_fast
+from safari.ops.vandermonde import log_vandermonde_fast
 try:
     import pykeops
-    from src.ops.vandermonde import log_vandermonde, log_vandermonde_transpose
+    from safari.ops.vandermonde import log_vandermonde, log_vandermonde_transpose
     has_pykeops = True
     log.info("Pykeops installation found.")
 except ImportError:
     has_pykeops = False
-    from src.ops.vandermonde import log_vandermonde_naive as log_vandermonde
-    from src.ops.vandermonde import log_vandermonde_transpose_naive as log_vandermonde_transpose
+    from safari.ops.vandermonde import log_vandermonde_naive as log_vandermonde
+    from safari.ops.vandermonde import log_vandermonde_transpose_naive as log_vandermonde_transpose
     log.warning(
         "Falling back on slow Vandermonde kernel. Install pykeops for improved memory efficiency."
     )

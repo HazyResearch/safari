@@ -4,10 +4,10 @@ import torch.nn.functional as F
 
 from einops import rearrange
 
-from src.models.sequence.ssm.ss_kernel import SSKernel
+from safari.models.sequence.ssm.ss_kernel import SSKernel
 
 try:
-    from src.ops.fftconv import fftconv_func
+    from safari.ops.fftconv import fftconv_func
 except ImportError:
     fftconv_func = None
 

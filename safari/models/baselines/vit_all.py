@@ -15,10 +15,10 @@ import torch.nn.functional as F
 from timm.models.helpers import build_model_with_cfg, overlay_external_default_cfg
 from timm.models.layers import PatchEmbed, Mlp, trunc_normal_, lecun_normal_
 
-from src.models.sequence.base import SequenceModule
-from src.models.nn.components import Normalization
-from src.models.sequence.block import SequenceResidualBlock
-from src.utils.config import to_list, to_dict
+from safari.models.sequence.base import SequenceModule
+from safari.models.nn.components import Normalization
+from safari.models.sequence.block import SequenceResidualBlock
+from safari.utils.config import to_list, to_dict
 
 _logger = logging.getLogger(__name__)
 

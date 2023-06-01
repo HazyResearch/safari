@@ -7,8 +7,8 @@ import torch.nn.functional as F
 import numpy as np
 import math
 
-from src.models.functional.toeplitz import triangular_toeplitz_multiply, triangular_toeplitz_multiply_padded
-from src.utils.permutations import bitreversal_po2, bitreversal_permutation
+from safari.models.functional.toeplitz import triangular_toeplitz_multiply, triangular_toeplitz_multiply_padded
+from safari.utils.permutations import bitreversal_po2, bitreversal_permutation
 
 
 

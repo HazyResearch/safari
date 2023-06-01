@@ -4,8 +4,8 @@ import torch
 from einops import rearrange
 import math
 from torch import nn
-from src.models.nn import Activation
-from src.utils.train import OptimModule
+from safari.models.nn import Activation
+from safari.utils.train import OptimModule
 
 def ref_dft_matrix(N, H=1):
     """Compute the DFT matrix of size N x N.

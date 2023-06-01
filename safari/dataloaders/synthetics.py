@@ -8,7 +8,7 @@ import numpy as np
 from tqdm import tqdm
 from collections import Counter
 
-from src.dataloaders.base import SequenceDataset
+from safari.dataloaders.base import SequenceDataset
 
 class Vocab:
     """Custom vocab."""

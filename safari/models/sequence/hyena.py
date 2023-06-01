@@ -9,7 +9,7 @@ from functools import partial
 from einops import rearrange, repeat
 
 try:
-    from src.ops.fftconv import fftconv_ref, fftconv_func 
+    from safari.ops.fftconv import fftconv_ref, fftconv_func 
 except ImportError:
     fftconv_func = None
 
@@ -18,10 +18,10 @@ try:
 except ImportError:
     FusedDense = None
 
-import src.utils.registry as registry
-from src.utils.train import OptimModule
-from src.utils.config import instantiate, auto_assign_attrs
-from src.models.nn import Activation
+import safari.utils.registry as registry
+from safari.utils.train import OptimModule
+from safari.utils.config import instantiate, auto_assign_attrs
+from safari.models.nn import Activation
 
 
 # reference convolution with residual connection

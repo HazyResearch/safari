@@ -10,12 +10,12 @@ residual options: feedforward, residual, affine scalars, depth-dependent scaling
 from torch import nn
 
 from functools import partial
-import src.utils as utils
-from src.models.nn.components import Normalization, StochasticDepth, DropoutNd
-from src.models.sequence import SequenceModule
-from src.models.sequence.pool import registry as pool_registry
-from src.models.nn.residual import registry as residual_registry
-import src.utils.registry as registry
+import safari.utils as utils
+from safari.models.nn.components import Normalization, StochasticDepth, DropoutNd
+from safari.models.sequence import SequenceModule
+from safari.models.sequence.pool import registry as pool_registry
+from safari.models.nn.residual import registry as residual_registry
+import safari.utils.registry as registry
 
 
 class SequenceResidualBlock(SequenceModule):

@@ -5,7 +5,7 @@ import torch
 
 import torch.utils.benchmark as benchmark
 
-from src.models.sequence.hyena import HyenaOperator
+from safari.models.sequence.hyena import HyenaOperator
 from flash_attn.flash_attention import FlashMHA
 
 def benchmark_forward(fn, *inputs, repeats = 10, desc='', verbose=True, **kwinputs):

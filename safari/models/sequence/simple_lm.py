@@ -13,8 +13,8 @@ from torchvision.ops import StochasticDepth
 
 from einops import rearrange
 
-from src.utils import instantiate
-import src.utils.registry as registry
+from safari.utils import instantiate
+import safari.utils.registry as registry
 
 class LinearResidual(nn.Linear):
     """Wrap nn.Linear to return the residual as well. For compatibility with FusedDense.

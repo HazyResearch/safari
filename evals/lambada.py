@@ -9,7 +9,7 @@ import json
 
 sys.path.append(os.environ.get("SAFARI_PATH", "."))
 
-from src.models.sequence.long_conv_lm import ConvLMHeadModel
+from safari.models.sequence.long_conv_lm import ConvLMHeadModel
 
 from transformers import AutoTokenizer, GPT2LMHeadModel
 from spacy.lang.en.stop_words import STOP_WORDS
