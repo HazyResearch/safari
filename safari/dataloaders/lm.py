@@ -31,7 +31,7 @@ from pytorch_lightning import LightningDataModule
 
 from safari.utils import distributed
 import safari.utils.train
-log = src.utils.train.get_logger(__name__)
+log = safari.utils.train.get_logger(__name__)
 
 
 from safari.dataloaders.base import SequenceDataset, default_data_path

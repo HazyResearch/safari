@@ -25,7 +25,7 @@ from safari.tasks import decoders, encoders, tasks
 from safari.utils import registry
 from safari.utils.optim_groups import add_optimizer_hooks
 
-log = src.utils.train.get_logger(__name__)
+log = safari.utils.train.get_logger(__name__)
 
 # Turn on TensorFloat32 (speeds up large model training substantially)
 import torch.backends

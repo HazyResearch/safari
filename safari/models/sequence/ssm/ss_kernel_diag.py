@@ -249,10 +249,10 @@ class SSKernelDiag(OptimModule):
 class EMAKernel(OptimModule):
     """Translation of Mega's MultiHeadEMA.
     This is a minimal implementation of the convolution kernel part of the module.
-    This module, together with the main S4 block in src.models.sequence.ss.s4
+    This module, together with the main S4 block in safari.models.sequence.ss.s4
     (which is really just a fft-conv wrapper around any convolution kernel,
     such as this one), should be exactly equivalent to using the original Mega
-    EMA module in src.models.sequence.ss.ema.
+    EMA module in safari.models.sequence.ss.ema.
     Two additional flags have been provided to resolve discrepencies in parameter
     count between S4(D) and EMA
     - `dt_tie` makes the shape of the step size \Delta (H, 1) instead of (H, N)

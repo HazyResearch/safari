@@ -58,7 +58,7 @@ class LongConv(nn.Module):
         super().__init__()
         if verbose:
             import safari.utils.train
-            log = src.utils.train.get_logger(__name__)
+            log = safari.utils.train.get_logger(__name__)
             log.info(f"Constructing Long Conv (H, L) = ({d_model}, {l_max})")
 
         self.d_model = d_model

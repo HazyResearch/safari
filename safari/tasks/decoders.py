@@ -8,7 +8,7 @@ import safari.utils as utils
 import safari.utils.config
 import safari.utils.train
 
-log = src.utils.train.get_logger(__name__)
+log = safari.utils.train.get_logger(__name__)
 
 
 class Decoder(nn.Module):
