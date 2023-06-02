@@ -6,7 +6,7 @@ model:
   _name_: lm
   d_model: 864
   n_layer: 18
-  d_inner: ${eval: 2*${.d_model}}
+  d_inner: ${eval:2*${.d_model}}
   vocab_size: 50257
   resid_dropout: 0.0
   embed_dropout: 0.1
