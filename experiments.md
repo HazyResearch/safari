@@ -99,15 +99,15 @@ These commands train for 5B tokens.
 
 To train a small Hyena model for 150 billion tokens:
 ```
-python -m train experiment/pile/hyena-150b
+python -m train experiment=pile/hyena-150b-tokens
 ```
 We provide a [wandb log](https://api.wandb.ai/links/hazy-research/uzoya5mf) as a reference for typical training behavior.
 
 To recreate the experiments in the Hyena paper, you should adjust the max steps and scheduler to decay at 5B, 10B, or 15B tokens:
 ```
-python -m train experiment/pile/hyena-150b trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
-python -m train experiment/pile/hyena-150b trainer.max_steps=20000 train.scheduler.t_initial=20000 # 10B tokens
-python -m train experiment/pile/hyena-150b trainer.max_steps=30000 train.scheduler.t_initial=30000 # 15B tokens
+python -m train experiment=pile/hyena-150b-tokens trainer.max_steps=10000 train.scheduler.t_initial=10000 # 5B tokens
+python -m train experiment=pile/hyena-150b-tokens trainer.max_steps=20000 train.scheduler.t_initial=20000 # 10B tokens
+python -m train experiment=pile/hyena-150b-tokens trainer.max_steps=30000 train.scheduler.t_initial=30000 # 15B tokens
 ```
 
 ## Downstream Evaluations
