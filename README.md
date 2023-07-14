@@ -57,6 +57,15 @@ See the [experiments](./experiments.md) page for more:
 * H3 + Long Conv experiments
 * Hyena language and vision experiments
 
+## Resources
+
+We're happy to share independent reimplementations and explainer posts about methods presented in this repository. 
+
+#### Hyena: 
+* [irhum's JAX reimplementation and comparison with nanoGPT](https://github.com/irhum/hyena)
+* [exps's reimplementation](https://github.com/expz/annotated-hyena) and [explainer post](https://medium.com/@jskowera/the-annotated-hyena-3e50e0aa372a)
+
+
 ## Citation
 
 If you use this codebase, or otherwise found our work valuable, you can cite us as follows:
