@@ -1,4 +1,4 @@
-# _target_: src.datamodules.aan.AAN
+# _target_: safari.datamodules.aan.AAN
 _name_: aan
 
 # data_dir: ${oc.env:DATA_DIR,${data_dir}}/aan/tsv_data # data_dir is specified in config.yaml

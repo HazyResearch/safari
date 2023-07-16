@@ -27,7 +27,7 @@ test_transforms:
   interpolation: bicubic
   crop_pct: 0.9
 mixup:
-  _target_: src.dataloaders.utils.timm_mixup.TimmMixup
+  _target_: safari.dataloaders.utils.timm_mixup.TimmMixup
   mixup_alpha: 0.8
   cutmix_alpha: 1.0
   # if using timm soft cross entropy, pass label_smoothing here
