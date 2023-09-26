@@ -141,10 +141,7 @@ class LongConv(nn.Module):
             k_f = self.block_fft_k(k.to(torch.complex64), N=L_kernel+L) # (C H L)
             u_f = self.block_fft_u(u.to(torch.complex64), N=L_kernel+L) # (B H L)
             y_f = contract('bhl,chl->bchl', u_f, k_f)
-            if self.learn_ifft:
-                y = self.block_fft_u(y_f, N=L_kernel+L,forward=False).real[..., :L]
-            else:
-                y = torch.fft.ifft(y_f, n=L_kernel+L, dim=-1).real[..., :L] # (B C H L)
+            y = torch.fft.ifft(y_f, n=L_kernel+L, dim=-1).real[..., :L] # (B C H L)
         else:
             k_f = torch.fft.rfft(k, n=L_kernel+L) # (C H L)
             u_f = torch.fft.rfft(u, n=L_kernel+L) # (B H L)
