@@ -8,8 +8,9 @@ Please see these instructions for how to download weights and run our pretrained
 
 ## Hyena 
 
-**Hyena Hierarchy: Towards Larger Convolutional Language models**
+**Hyena Hierarchy: Towards Larger Convolutional Language models** \
 Michael Poli\*, Stefano Massaroli\*, Eric Nguyen\*, Daniel Y. Fu, Tri Dao, Stephen Baccus, Yoshua Bengio, Stefano Ermon, Christopher Ré \
+ICML 2023. **Oral**.\
 [Paper](https://arxiv.org/abs/2302.10866)
 ![Hyena](assets/hyena.png "Hyena Hierarchy")
 
@@ -17,14 +18,15 @@ Michael Poli\*, Stefano Massaroli\*, Eric Nguyen\*, Daniel Y. Fu, Tri Dao, Steph
 
 **Simple Hardware-Efficient Long Convolutions for Sequence Modeling**\
 Daniel Y. Fu*, Elliot L. Epstein*, Eric Nguyen, Armin W. Thomas, Michael Zhang, Tri Dao, Atri Rudra, Christopher Ré\
+ICML 2023\
 [Paper](https://arxiv.org/abs/2302.06646)
 ![LongConvs](assets/long_convs.png "Long Convolutions for Sequence Modeling")
 
 ## Hungry Hungry Hippos (H3)
 
-**Hungry Hungry Hippos: Towards Language Modeling with State Space Models**  
+**Hungry Hungry Hippos: Towards Language Modeling with State Space Models**  \
 Daniel Y. Fu\*, Tri Dao\*, Khaled K. Saab, Armin W. Thomas, Atri Rudra, Christopher Ré  
-International Conference on Learning Representations, 2023. Notable top-25% (spotlight).  
+ICLR, 2023. **Notable top-25% (spotlight).** 
 [Paper](https://arxiv.org/abs/2212.14052)
 ![H3](assets/h3.png "Hungry Hungry Hippos")
 
