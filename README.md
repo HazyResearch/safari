@@ -80,7 +80,7 @@ If you use this codebase, or otherwise found our work valuable, you can cite us 
 @article{fu2023simple,
   title={Simple Hardware-Efficient Long Convolutions for Sequence Modeling},
   author={Fu, Daniel Y. and Epstein, Elliot L. and Nguyen, Eric and Thomas, Armin W. and Zhang, Michael and Dao, Tri and Rudra, Atri and R{\'e}, Christopher},
-  journal={arXiv preprint arXiv:2302.06646},
+  journal={International Conference on Machine Learning},
   year={2023}
 }
 
