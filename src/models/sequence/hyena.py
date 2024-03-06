@@ -129,6 +129,7 @@ class HyenaFilter(OptimModule):
             bias=True,
             num_inner_mlps=2,
             normalized=False,
+            use_flashfftconv=False,
             **kwargs
         ):
         """
@@ -147,6 +148,8 @@ class HyenaFilter(OptimModule):
         self.d_model = d_model
         self.use_bias = bias
         self.fused_fft_conv = fused_fft_conv
+        self.use_flashfftconv = use_flashfftconv
+        assert not (use_flashfftconv and fused_fft_conv), "Cannot use both fused and flash fft conv"
         self.bias = nn.Parameter(torch.randn(self.d_model))
         self.dropout = nn.Dropout(dropout)
         
@@ -180,9 +183,9 @@ class HyenaFilter(OptimModule):
         z, t = self.pos_emb(L)
         h = self.implicit_filter(z)
 
-        h = self.modulation(t, h)
-
         if self.normalized: h = h / torch.norm(h, dim=-1, p=1, keepdim=True)
+
+        h = self.modulation(t, h)
 
         return h
 
@@ -194,7 +197,19 @@ class HyenaFilter(OptimModule):
         if bias is None: bias = self.bias
         bias = bias if self.use_bias else 0 * bias
 
-        if self.fused_fft_conv: 
+        if self.use_flashfftconv:
+            bs, n_heads, head_dim, n_blocks, block_dim = x.shape
+            assert (
+                n_heads == 1 and n_blocks == 1
+            ), "Use MultiHeadHyenaOperator for n_heads > 1"
+            x_pre_dims = x.shape
+            # bias = bias.squeeze()
+            x = x.reshape(bs, head_dim, block_dim)
+
+            y = self.flashfftconv(x, k) + x * bias
+            
+            y = y.reshape(x_pre_dims)
+        elif self.fused_fft_conv: 
             bias = bias.to(dtype=torch.float32)
             y = fftconv_func(
                 x, k, bias, dropout_mask=None, gelu=False, 

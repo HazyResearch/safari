@@ -1,0 +1,29 @@
+# @package _global_
+defaults:
+  - /experiment/pile/base.yaml
+
+model:
+  _name_: lm
+  d_model: 864
+  n_layer: 18
+  d_inner: ${eval:2*${.d_model}}
+  vocab_size: 50257
+  resid_dropout: 0.0
+  embed_dropout: 0.1
+  layer:
+    _name_: hyena
+    emb_dim: 33 
+    filter_order: 64 
+    local_order: 3
+    l_max: ${dataset.max_length}
+    fused_fft_conv: False
+    modulate: True
+    w: 14
+    lr: ${optimizer.lr}
+    lr_pos_emb: ${optimizer.lr}
+    use_flashfftconv: True
+  fused_mlp: False
+  fused_dropout_add_ln: False
+  residual_in_fp32: True
+  pad_vocab_size_multiple: 8
+  use_flashfftconv: True

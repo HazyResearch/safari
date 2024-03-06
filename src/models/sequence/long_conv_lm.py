@@ -151,7 +151,9 @@ class LMBackbone(nn.Module):
                  layer_norm_epsilon: float = 1e-5, initializer_cfg=None,
                  fused_mlp=False, fused_dropout_add_ln=False, residual_in_fp32=False,
                  sequence_parallel=True,
-                 device=None, dtype=None, **kwargs) -> None:
+                 device=None, dtype=None, 
+                 use_flashfftconv=False,
+                 **kwargs) -> None:
         factory_kwargs = {'device': device, 'dtype': dtype}
         super().__init__()
         self.process_group = process_group
@@ -177,6 +179,11 @@ class LMBackbone(nn.Module):
         self.fused_dropout_add_ln = fused_dropout_add_ln
         if self.fused_dropout_add_ln and dropout_add_layer_norm is None:
             raise ImportError('dropout_add_layer_norm is not installed')
+        
+        if use_flashfftconv:
+            from flashfftconv import FlashFFTConv
+            l_max = layer['l_max']
+            self.flashfftconv = FlashFFTConv(2 * l_max, dtype=torch.bfloat16)
 
         self.layers = nn.ModuleList([create_block(
             d_model, d_inner=d_inner, process_group=process_group,
@@ -188,6 +195,14 @@ class LMBackbone(nn.Module):
             sequence_parallel=self.sequence_parallel,
             **factory_kwargs,
         ) for i in range(n_layer)])
+
+        if use_flashfftconv:
+            for i, layer_mod in enumerate(self.layers):
+                if attn_layer_idx is None or i not in attn_layer_idx:
+                    if layer['_name_'] == 'hyena':
+                        layer_mod.mixer.filter_fn.flashfftconv = self.flashfftconv
+                    else:
+                        print(f"FlashFFTConv not supported for layer {layer['__name__']}")
 
         self.drop_f = nn.Dropout(resid_dropout)
         self.ln_f = nn.LayerNorm(d_model, eps=layer_norm_epsilon, **factory_kwargs)
